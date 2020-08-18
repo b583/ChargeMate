@@ -14,5 +14,10 @@ class MainActivity : AppCompatActivity() {
         // check battery level
         val batteryLevelGetter = BatteryLevelGetter(applicationContext)
         println(batteryLevelGetter.get())
+
+        // start battery level service
+        val serviceStartIntent = Intent(this, BatteryLevelService::class.java)
+        serviceStartIntent.action = ServiceAction.START.toString()
+        startForegroundService(serviceStartIntent)
     }
 }
