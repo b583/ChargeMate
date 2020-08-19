@@ -23,7 +23,7 @@ class BatteryLevelService : Service() {
 
         Log.i(tag, "Starting BatteryLevelService...")
         checkingThread = BatteryLevelCheckingThread(applicationContext)
-        checkingThread.run()
+        checkingThread.start()
         isServiceStarted = true
         return START_STICKY
     }
