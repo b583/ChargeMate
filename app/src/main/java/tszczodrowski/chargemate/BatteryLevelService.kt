@@ -10,9 +10,15 @@ class BatteryLevelService : Service() {
     private val tag = Common().getTag()
     private var isServiceStarted = false
     private lateinit var checkingThread: BatteryLevelCheckingThread
+    private lateinit var notificationProvider: NotificationProvider
 
     override fun onBind(p0: Intent?): IBinder? {
         return null // not needed
+    }
+
+    private fun initDependencies() {
+        checkingThread = BatteryLevelCheckingThread(applicationContext)
+        notificationProvider = NotificationProvider(applicationContext)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
