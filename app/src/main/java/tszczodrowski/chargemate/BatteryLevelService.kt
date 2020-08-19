@@ -22,7 +22,8 @@ class BatteryLevelService : Service() {
         }
 
         Log.i(tag, "Starting BatteryLevelService...")
-        checkingThread = BatteryLevelCheckingThread(applicationContext)
+        initDependencies()
+        startForeground(1, notificationProvider.createNotification())
         checkingThread.start()
         isServiceStarted = true
         return START_STICKY
@@ -34,7 +35,6 @@ class BatteryLevelService : Service() {
         stopForeground(true)
         stopSelf()
         super.onDestroy()
-        // TODO stop battery checking thread
         Log.i(tag, "BatteryLevelService stopped")
     }
 
