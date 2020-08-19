@@ -15,7 +15,7 @@ class NotificationProvider(private val context: Context) {
 
     private fun createNotificationChannel() {
         val name = "ChargeMate notifications"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val importance = NotificationManager.IMPORTANCE_MIN
         val channel = NotificationChannel(channelName, name, importance).apply {
             description = "Notifications used by ChargeMate"
         }
@@ -30,7 +30,9 @@ class NotificationProvider(private val context: Context) {
             .setSmallIcon(R.drawable.ic_stat_name)
             .setContentTitle("ChargeMate is running")
             .setContentText("This notification prevents ChargeMate from closing")
-            .setOngoing(true)
+            .setOngoing(true) // prevent user from removing notification
+            .setLocalOnly(true) // don't bridge to remote display
+            .setVisibility(Notification.VISIBILITY_SECRET) // don't show on lock screen
             .build()
     }
 
