@@ -9,6 +9,7 @@ class BatteryLevelService : Service() {
 
     private val tag = Common().getTag()
     private var isServiceStarted = false
+    private lateinit var checkingThread: BatteryLevelCheckingThread
 
     override fun onBind(p0: Intent?): IBinder? {
         return null // not needed
@@ -21,16 +22,18 @@ class BatteryLevelService : Service() {
         }
 
         Log.i(tag, "Starting BatteryLevelService...")
-        // TODO start battery checking thread
+        checkingThread = BatteryLevelCheckingThread(applicationContext)
+        checkingThread.run()
         isServiceStarted = true
         return START_STICKY
     }
 
     override fun onDestroy() {
         Log.i(tag, "Stopping BatteryLevelService...")
-        super.onDestroy()
+        checkingThread.shutdown()
         stopForeground(true)
         stopSelf()
+        super.onDestroy()
         // TODO stop battery checking thread
         Log.i(tag, "BatteryLevelService stopped")
     }
